@@ -1,3 +1,5 @@
+@import "styles/mixins";
+
 .task {
   margin: 0.3rem;
   padding: 1.5rem;
@@ -7,7 +9,11 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  width: 100%;
+  width: 250px;
+
+  &_created {
+    font-size: inherit;
+  }
 
   &_downloading {
     color: #31a2a2;
@@ -34,22 +40,25 @@
 
   &__title {
     margin: 0 0 1rem 0;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   &__date {
-    padding-bottom: 10px;
+    padding-bottom: 0.8rem;
+    color: #616161;
   }
 
-  &__progresses{
+  &__progresses {
     display: flex;
-    margin-left: 30px;
+    margin-left: 0.5rem;
+    margin-top: 1rem;
   }
 
   &__progress {
-    width: 50px;
-    margin-right: 20px;
-    &:last-of-type{
+    width: 4rem;
+    margin-right: 1.5rem;
+
+    &:last-of-type {
       margin-right: 0;
     }
   }
@@ -63,30 +72,49 @@
   &__actions {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    align-content: center;
   }
 
   &__copy {
     background-color: #0070f3;
     border: none;
-    padding: 10px;
+    padding: 0.8rem 1rem;
     border-radius: 10px;
     font-size: 1.1rem;
     cursor: pointer;
     color: #ffffff;
+    align-self: flex-end;
+  }
+
+  @include breakpoint(s){
+    width: 500px;
+  }
+
+  @include breakpoint(m){
+    width: 600px;
+  }
+
+  @include breakpoint(l){
+    width: 600px;
+  }
+
+  @include breakpoint(l){
+    width: 800px;
   }
 
 }
 
 .green {
-  :global(.CircularProgressbar-path){
+  :global(.CircularProgressbar-path) {
     stroke: #2e9045;
   }
-  :global(.CircularProgressbar-text){
+
+  :global(.CircularProgressbar-text) {
     fill: #2e9045;
   }
 }
-
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   .card {
     border-color: #222;
   }

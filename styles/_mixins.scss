@@ -1,0 +1,19 @@
+$breakpoints: (
+        xxl: 1680px,
+        xl: 1443px,
+        l: 1023px,
+        m: 767px,
+        s: 639px,
+);
+
+@mixin breakpoint($point) {
+  @if map-has-key($breakpoints, $point) {
+    $value: map-get($breakpoints, $point);
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @warn 'Wrong point: #{$point}.';
+  }
+
+}
