@@ -1,0 +1,93 @@
+.task {
+  margin: 0.3rem;
+  padding: 1.5rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  width: 100%;
+
+  &_downloading {
+    color: #31a2a2;
+    border: 1px solid #31a2a2;
+  }
+
+  &_uploading {
+    color: #308040;
+    border: 1px solid #308040;
+  }
+
+  &_deleted {
+    color: #ea6f41;
+    border: 1px solid #ea6f41;
+  }
+
+  &__content {
+    display: flex;
+  }
+
+  &__info {
+
+  }
+
+  &__title {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+  }
+
+  &__date {
+    padding-bottom: 10px;
+  }
+
+  &__progresses{
+    display: flex;
+    margin-left: 30px;
+  }
+
+  &__progress {
+    width: 50px;
+    margin-right: 20px;
+    &:last-of-type{
+      margin-right: 0;
+    }
+  }
+
+  &__status {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__copy {
+    background-color: #0070f3;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #ffffff;
+  }
+
+}
+
+.green {
+  :global(.CircularProgressbar-path){
+    stroke: #2e9045;
+  }
+  :global(.CircularProgressbar-text){
+    fill: #2e9045;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    border-color: #222;
+  }
+}
