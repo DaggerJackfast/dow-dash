@@ -1,10 +1,9 @@
-import styles from "./styles.module.scss";
 
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <footer className={styles.footer}>
-      <div>
+    <footer className="flex flex-1 py-8 border-t justify-center align-center">
+      <div className="flex justify-center align-center grow">
         Dow Dash {year}
       </div>
     </footer>

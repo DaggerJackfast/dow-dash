@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.scss'
 import Task from "../components/Task";
 import {useCallback, useContext, useEffect, useState} from "react";
 import {WebsocketContext} from "../contexts/WebsocketContext";
@@ -38,14 +37,14 @@ export default function Home() {
       console.log('on download-progress downloadProgress: ', payload);
 
       if (_.isObject(payload)) {
-        const {data, progress} = payload;
+        const { data } = payload;
         setDownloadProgress({[data.id]: data.progress});
       }
     })
     socket.on(uploadProgressEvent, (payload) => {
       console.log('on upload-progress uploadProgress: ', payload);
       if (payload) {
-        const {data, progress} = payload;
+        const { data } = payload;
         setUploadProgress({[data.id]: data.progress});
       }
     })
@@ -70,16 +69,15 @@ export default function Home() {
       <Favicon/>
     </Head>
     <Header/>
-    <main className={styles.main}>
+    <main className="min-h-screen py-16 flex-1 flex flex-col justify-center align-center">
       <Container>
-        <h1 className={styles.title}>
+        <h1 className="mb-4 text-6xl text-center">
           Dow Dash
         </h1>
-        <p className={styles.description}>
+        <p className="text-center">
           Dashboard for getting information about task processes
         </p>
-
-        <div className={styles.list}>
+        <div className="flex align-center flex-col justify-center w-1/3 mx-auto">
           {
             tasks.map(task => (
               <Task

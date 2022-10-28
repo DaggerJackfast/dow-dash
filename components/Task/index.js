@@ -1,17 +1,22 @@
-import React, {useEffect} from 'react';
-import styles from "./styles.module.scss";
+import React from 'react';
 import dayjs from "dayjs";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {toast} from "react-toastify";
 import cx from 'classnames';
 import {CircularProgressbar} from 'react-circular-progressbar';
 
-const roundDecimal = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 const CREATED = 0;
 const DOWNLOADING = 1;
 const UPLOADING = 2;
 const DELETED = 3;
-const STAGE_NAMES = ['created', 'downloading', 'uploading', 'deleted'];
+
+const stageClasses = Object.freeze({
+  created: '',
+  downloading: 'text-sky-500 border-sky-500',
+  uploading: 'text-teal-700 border-teal-700',
+  deleted: 'text-red-600 border-red-600',
+});
+
 
 const Task = ({name, datetime, url, stage, download, upload}) => {
   const onCopyToClipboard = () => {
@@ -22,29 +27,30 @@ const Task = ({name, datetime, url, stage, download, upload}) => {
     });
   }
 
-  const stageName = STAGE_NAMES[stage];
+  const stageName = Object.keys(stageClasses)[stage];
+  const stageClass = _.get(stageClasses, stageName);
   return (
-    <div className={cx(styles.task, {[styles[`task_${stageName}`]]: true})}>
-      <div className={styles.task__date}>
+    <div className={cx("border color rounded-lg m-1 p-6", {[stageClass]: true})}>
+      <div className="pb-3 text-opacity-70 text-sm">
         <span>{dayjs(datetime).format('YYYY-MM-DD, HH:MM')}</span>
       </div>
-      <div className={styles.task__content}>
-        <div className={styles.task__info}>
-          <h2 className={styles.task__title}>{name}</h2>
-          <span className={styles.task__status}>{stageName}</span>
+      <div className="flex">
+        <div>
+          <h2 className="mb-4 text-xl">{name}</h2>
+          <span className="m-0 text-xl">{stageName}</span>
         </div>
       </div>
-      <div className={styles.task__actions}>
-        <div className={styles.task__progresses}>
-          <div className={styles.task__progress}>
+      <div className="flex justify-between align-center content-center">
+        <div className="flex ml-2 mt-4">
+          <div className="w-16 mr-6 last-of-type:mr-0">
             <CircularProgressbar value={download} maxValue={1} text={`${(download * 100).toFixed(2)}%`}/>
           </div>
-          <div className={styles.task__progress}>
-            <CircularProgressbar className={styles.green} maxValue={1} value={upload} text={`${(upload * 100).toFixed(2)}%`}/>
+          <div className="w-16 mr-16 last-of-type:mr-0">
+            <CircularProgressbar className="green-progress" maxValue={1} value={upload} text={`${(upload * 100).toFixed(2)}%`}/>
           </div>
         </div>
         <CopyToClipboard text={url}>
-          <button className={styles.task__copy} type="button" onClick={onCopyToClipboard}>Copy Url</button>
+          <button className="btn bg-blue-500 rounded-lg px-4 py-3 text-white text-lg self-end" type="button" onClick={onCopyToClipboard}>Copy Url</button>
         </CopyToClipboard>
       </div>
     </div>

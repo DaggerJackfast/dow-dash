@@ -1,6 +1,5 @@
-import styles from './styles.module.scss'
 const Container = ({children}) => (
-  <div className={styles.container}>
+  <div className="container border mx-auto">
     {children}
   </div>
 )

@@ -1,13 +1,12 @@
-import styles from './styles.module.scss'
 import Container from "../Container";
 const Header = () => {
   return (
-    <header className={styles.header}>
+    <header className="p-8">
       <Container>
-        <div className={styles.header__logo}>
+        <div>
           <a href="#">Dow Dash</a>
         </div>
-        <div className={styles.header__actions}>
+        <div>
 
         </div>
       </Container>
