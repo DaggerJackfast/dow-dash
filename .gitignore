@@ -40,3 +40,6 @@ next-env.d.ts
 .idea
 .vs_code
 .vscode
+
+# Trashes
+.Trashes
