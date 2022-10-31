@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {toast} from "react-toastify";
 import cx from 'classnames';
+import _ from 'lodash';
 import {CircularProgressbar} from 'react-circular-progressbar';
 
 const CREATED = 0;
@@ -30,7 +31,7 @@ const Task = ({name, datetime, url, stage, download, upload}) => {
   const stageName = Object.keys(stageClasses)[stage];
   const stageClass = _.get(stageClasses, stageName);
   return (
-    <div className={cx("border color rounded-lg m-1 p-6", {[stageClass]: true})}>
+    <div className={cx("border color rounded-lg m-1 p-4", {[stageClass]: true})}>
       <div className="pb-3 text-opacity-70 text-sm">
         <span>{dayjs(datetime).format('YYYY-MM-DD, HH:MM')}</span>
       </div>

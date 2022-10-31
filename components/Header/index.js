@@ -7,7 +7,6 @@ const Header = () => {
           <a href="#">Dow Dash</a>
         </div>
         <div>
-
         </div>
       </Container>
     </header>
