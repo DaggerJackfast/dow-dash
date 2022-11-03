@@ -17,7 +17,6 @@ export const AuthProvider = ({children}) => {
   useEffect(() => {
     const loadUserFromCookies = async () => {
       const token = Cookies.get(TOKEN_COOKIE_KEY);
-      console.log('load user token: ', token);
       if (token) {
         try {
           const headers = {
