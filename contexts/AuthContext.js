@@ -5,15 +5,17 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import {toast} from "react-toastify";
 import _ from 'lodash';
+import getConfig from "next/config";
 export const AuthContext = createContext(null);
 
 const TOKEN_COOKIE_KEY = 'token';
 
 export const AuthProvider = ({children}) => {
   const router = useRouter();
+  const {publicRuntimeConfig} = getConfig();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const api = process.env.NEXT_PUBLIC_API_PATH;
+  const api = publicRuntimeConfig.apiPath;
   useEffect(() => {
     const loadUserFromCookies = async () => {
       const token = Cookies.get(TOKEN_COOKIE_KEY);

@@ -1,6 +1,7 @@
 import {createContext, useCallback, useContext, useEffect, useState} from 'react';
 import {io} from 'socket.io-client';
 import Cookies from 'js-cookie';
+import getConfig from "next/config";
 
 export const WebsocketContext = createContext(null);
 
@@ -9,7 +10,8 @@ export const useSocket = () => useContext(WebsocketContext);
 export const WebsocketProvider = ({children}) => {
   const accessToken = Cookies.get('token');
   const [socket, setSocket] = useState(null);
-  const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_HOST;
+  const {publicRuntimeConfig} = getConfig();
+  const socketUrl = publicRuntimeConfig.websocketHost;
   const connectSocket = useCallback(() => {
     const headers = accessToken ? {
       Authorization: `Bearer ${accessToken}`
