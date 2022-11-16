@@ -6,7 +6,7 @@ services:
     container_name: dow-dash
     ports:
       - 3000:3000
-    image: ${IMAGE}:${TAG}
+    image: ${IMAGE}
     build:
       context: .
       dockerfile: ./Dockerfile
