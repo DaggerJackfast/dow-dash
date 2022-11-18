@@ -4,8 +4,9 @@ import Image from 'next/image';
 import Container from "../components/Container";
 import {useAuth} from "../contexts/AuthContext";
 import {useState} from "react";
+import getConfig from "next/config";
 
-export default function Login() {
+const Login = () => {
   const {login} = useAuth();
   const [formData, setFormData] = useState({username: "", password: ""});
   const onChange = (name, value) => setFormData({...formData, [name]: value});
@@ -96,3 +97,9 @@ export default function Login() {
     </>
   )
 }
+Login.getInitialProps = async () => {
+  const {publicRuntimeConfig} = getConfig();
+  const {apiUrl, socketUrl} = publicRuntimeConfig;
+  return {apiUrl, socketUrl}
+}
+export default Login;

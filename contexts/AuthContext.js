@@ -10,12 +10,10 @@ export const AuthContext = createContext(null);
 
 const TOKEN_COOKIE_KEY = 'token';
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({children, apiUrl}) => {
   const router = useRouter();
-  const {publicRuntimeConfig} = getConfig();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const api = publicRuntimeConfig.apiPath;
   useEffect(() => {
     const loadUserFromCookies = async () => {
       const token = Cookies.get(TOKEN_COOKIE_KEY);
@@ -25,7 +23,7 @@ export const AuthProvider = ({children}) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
-          const response = await axios.get(`${api}/auth/me`, { headers });
+          const response = await axios.get(`${apiUrl}/auth/me`, { headers });
           const { data } = await response;
           if (data) {
             setUser(data);
@@ -43,11 +41,11 @@ export const AuthProvider = ({children}) => {
       }
     }
     loadUserFromCookies().then();
-  }, [api]);
+  }, [apiUrl]);
 
   const login = async ({username, password}) => {
     try {
-      const response = await axios.post(`${api}/auth/login`, {username, password} ,{
+      const response = await axios.post(`${apiUrl}/auth/login`, {username, password} ,{
         headers: {
           'Content-Type': 'application/json',
         }

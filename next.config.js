@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   publicRuntimeConfig: {
-    apiPath: process.env.API_URL,
-    websocketHost: process.env.WEBSOCKET_HOST,
+    apiUrl: process.env.API_URL,
+    socketUrl: process.env.WEBSOCKET_HOST,
     mode: process.env.NODE_ENV
   },
   reactStrictMode: true,

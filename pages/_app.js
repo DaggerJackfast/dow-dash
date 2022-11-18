@@ -9,9 +9,9 @@ const excludedPages = ['/login'];
 function MyApp({Component, pageProps}) {
   return (
     <>
-      <AuthProvider>
+      <AuthProvider apiUrl={pageProps.apiUrl} >
         <Protected exclude={excludedPages}>
-          <WebsocketProvider>
+          <WebsocketProvider socketUrl={pageProps.socketUrl}>
             <Component {...pageProps}/>
           </WebsocketProvider>
         </Protected>

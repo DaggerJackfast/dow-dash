@@ -7,8 +7,9 @@ import Favicon from "../components/Favicon";
 import Header from "../components/Header";
 import Container from "../components/Container";
 import {useSocket} from "../contexts/WebsocketContext";
+import getConfig from "next/config";
 
-export default function Home() {
+const Home = () => {
   const connectEvent = 'connect';
   const tasksEvent = 'tasks';
   const downloadProgressEvent = 'download-progress';
@@ -92,4 +93,11 @@ export default function Home() {
     <Footer/>
     </>
   )
+};
+
+Home.getInitialProps = async() => {
+  const {publicRuntimeConfig} = getConfig();
+  const {apiUrl, socketUrl} = publicRuntimeConfig;
+  return { apiUrl, socketUrl };
 }
+export default Home;
