@@ -20,7 +20,6 @@ const Login = () => {
       <Head>
         <title>Dow Dash - Login</title>
         <meta name="description" content="Dow bot dashboard login"/>
-        <Favicon/>
       </Head>
       <main>
         <section className="gradient-form bg-gray-200 h-screen">

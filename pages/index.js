@@ -61,7 +61,6 @@ const Home = () => {
     <Head>
       <title>Dow Dash</title>
       <meta name="description" content="Dow bot dashboard"/>
-      <Favicon/>
     </Head>
     <Header/>
     <main className="min-h-screen py-16 flex-1 flex flex-col justify-center align-center">
