@@ -3,7 +3,6 @@ import Task from "../components/Task";
 import {useCallback, useEffect, useState} from "react";
 import _ from 'lodash';
 import Footer from "../components/Footer";
-import Favicon from "../components/Favicon";
 import Header from "../components/Header";
 import Container from "../components/Container";
 import {useSocket} from "../contexts/WebsocketContext";
