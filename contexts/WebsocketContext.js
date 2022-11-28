@@ -10,12 +10,10 @@ export const WebsocketProvider = ({children, socketUrl}) => {
   const accessToken = Cookies.get('token');
   const [socket, setSocket] = useState(null);
   const connectSocket = useCallback(() => {
-    const headers = accessToken ? {
-      Authorization: `Bearer ${accessToken}`
-    } : {};
     const ioSocket = io(socketUrl, {
       reconnection: true,
-      extraHeaders: {...headers}
+      transports: ['websocket'],
+      auth: { token: accessToken },
     });
     setSocket(ioSocket);
   }, [socketUrl, accessToken])
