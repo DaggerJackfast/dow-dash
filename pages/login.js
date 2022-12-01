@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Favicon from "../components/Favicon";
 import Image from 'next/image';
 import Container from "../components/Container";
 import {useAuth} from "../contexts/AuthContext";
