@@ -64,13 +64,13 @@ const Home = () => {
     <Header/>
     <main className="min-h-screen py-16 flex-1 flex flex-col justify-center align-center">
       <Container>
-        <h1 className="mb-4 text-6xl text-center">
+        <h1 className="mb-4 text-3xl xl:text-6xl text-center">
           Dow Dash
         </h1>
         <p className="text-center">
           Dashboard for getting information about task processes
         </p>
-        <div className="flex align-center flex-col justify-center w-1/3 mx-auto">
+        <div className="flex align-center flex-col justify-center w-10/12 lg:w-1/3 mx-auto">
           {
             tasks.map(task => (
               <Task

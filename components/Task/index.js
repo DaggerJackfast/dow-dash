@@ -36,22 +36,22 @@ const Task = ({name, datetime, url, stage, download, upload}) => {
         <span>{dayjs(datetime).format('YYYY-MM-DD, HH:MM')}</span>
       </div>
       <div className="flex">
-        <div>
-          <h2 className="mb-4 text-xl">{name}</h2>
-          <span className="m-0 text-xl">{stageName}</span>
+        <div className='overflow-hidden'>
+          <h2 className="mb-4 text-sm xl:text-xl text-ellipsis">{name}</h2>
+          <span className="m-0 text-sm xl:text-xl">{stageName}</span>
         </div>
       </div>
       <div className="flex justify-between align-center content-center">
         <div className="flex ml-2 mt-4">
-          <div className="w-16 mr-6 last-of-type:mr-0">
+          <div className="w-12 lx:w-16 mr-3 lx:mr-16 last-of-type:mr-0">
             <CircularProgressbar value={download} maxValue={1} text={`${(download * 100).toFixed(2)}%`}/>
           </div>
-          <div className="w-16 mr-16 last-of-type:mr-0">
+          <div className="w-12 lx:w-16 mr-3 xl:mr-16 last-of-type:mr-0">
             <CircularProgressbar className="green-progress" maxValue={1} value={upload} text={`${(upload * 100).toFixed(2)}%`}/>
           </div>
         </div>
         <CopyToClipboard text={url}>
-          <button className="btn bg-blue-500 rounded-lg px-4 py-3 text-white text-lg self-end" type="button" onClick={onCopyToClipboard}>Copy Url</button>
+          <button className="btn bg-blue-500 rounded-lg p-2 lg:px-4 lg:py-3 text-white text-sm xl:text-lg self-end" type="button" onClick={onCopyToClipboard}>Copy Url</button>
         </CopyToClipboard>
       </div>
     </div>
