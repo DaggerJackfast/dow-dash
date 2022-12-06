@@ -1,14 +1,17 @@
-import styles from './styles.module.scss'
 import Container from "../Container";
-const Header = () => {
-  return (
-    <header className={styles.header}>
-      <Container>
-        <div className={styles.header__logo}>
-          <a href="#">Dow Dash</a>
-        </div>
-        <div className={styles.header__actions}>
+import ProfileDropdown from "./ProfileDropdown";
+import { useAuth } from '../../contexts/AuthContext';
 
+const Header = () => {
+  const {user, logout} = useAuth()
+  return (
+    <header className="py-4 bg-slate-700">
+      <Container>
+        <div className="flex justify-between border-bottom align-center content-center">
+          <div className="flex">
+            <a className="text-white flex self-center" href="#">Dow Dash</a>
+          </div>
+          { user && <ProfileDropdown user={user} logout={logout} /> }
         </div>
       </Container>
     </header>

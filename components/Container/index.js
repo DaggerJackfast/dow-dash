@@ -1,6 +1,6 @@
-import styles from './styles.module.scss'
-const Container = ({children}) => (
-  <div className={styles.container}>
+import cx from 'classnames';
+const Container = ({children, className}) => (
+  <div className={cx("container mx-auto", {[className]: !!className})}>
     {children}
   </div>
 )

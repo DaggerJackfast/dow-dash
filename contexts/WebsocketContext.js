@@ -1,6 +1,39 @@
-import { createContext } from 'react';
+import {createContext, useCallback, useContext, useEffect, useState} from 'react';
 import {io} from 'socket.io-client';
+import Cookies from 'js-cookie';
 
-export const socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_HOST)
-export const WebsocketContext = createContext(socket);
-export const WebsocketProvider = WebsocketContext.Provider;
+export const WebsocketContext = createContext(null);
+
+export const useSocket = () => useContext(WebsocketContext);
+
+export const WebsocketProvider = ({children, socketUrl}) => {
+  const accessToken = Cookies.get('token');
+  const [socket, setSocket] = useState(null);
+  const connectSocket = useCallback(() => {
+    const ioSocket = io(socketUrl, {
+      reconnection: true,
+      transports: ['websocket'],
+      auth: { token: accessToken },
+    });
+    setSocket(ioSocket);
+  }, [socketUrl, accessToken])
+
+  const disconnectSocket = useCallback(() => {
+    socket?.disconnect();
+    setSocket(null);
+  }, [socket]);
+
+  useEffect(() => {
+    connectSocket();
+
+    return () => {
+      disconnectSocket()
+    }
+  },[connectSocket])
+
+  return (
+    <WebsocketContext.Provider value={socket} >
+      {children}
+    </WebsocketContext.Provider>
+  )
+}
