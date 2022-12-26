@@ -13,6 +13,7 @@ const Home = () => {
   const tasksEvent = 'tasks';
   const downloadProgressEvent = 'download-progress';
   const uploadProgressEvent = 'upload-progress';
+  const deleteTaskEvent = 'delete-task';
   const [tasks, setTasks] = useState([]);
   const [downloadProgress, setDownloadProgress] = useState({});
   const [uploadProgress, setUploadProgress] = useState({});
@@ -23,6 +24,8 @@ const Home = () => {
     socket.emit(downloadProgressEvent);
     socket.emit(uploadProgressEvent);
   }, [socket]);
+
+  const onTaskDelete = (task) => socket.emit(deleteTaskEvent, {id: task.id});
 
   useEffect(() => {
     if (!socket) {
@@ -81,6 +84,7 @@ const Home = () => {
                 stage={task.stage}
                 download={_.get(downloadProgress, task.id, 0)}
                 upload={_.get(uploadProgress, task.id, 0)}
+                onDelete={() => onTaskDelete(task)}
               />
             ))
           }
