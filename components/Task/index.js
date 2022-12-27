@@ -19,7 +19,7 @@ const stageClasses = Object.freeze({
 });
 
 
-const Task = ({name, datetime, url, stage, download, upload}) => {
+const Task = ({name, datetime, url, stage, download, upload, onDelete}) => {
   const onCopyToClipboard = () => {
     toast.info(`Url of task "${name}" is copied to clipboard`, {
       position: 'bottom-right',
@@ -50,9 +50,14 @@ const Task = ({name, datetime, url, stage, download, upload}) => {
             <CircularProgressbar className="green-progress" maxValue={1} value={upload} text={`${(upload * 100).toFixed(2)}%`}/>
           </div>
         </div>
-        <CopyToClipboard text={url}>
-          <button className="btn bg-blue-500 rounded-lg p-2 lg:px-4 lg:py-3 text-white text-sm xl:text-lg self-end" type="button" onClick={onCopyToClipboard}>Copy Url</button>
-        </CopyToClipboard>
+        <div>
+          <button className="btn bg-red-400 rounded-lg p-2 lg:px-4 lg:py-3 text-white text-sm xl:text-lg self-end mr-2" type="button" onClick={onDelete}>
+            <span>delete</span>
+          </button>
+          <CopyToClipboard text={url}>
+            <button className="btn bg-blue-500 rounded-lg p-2 lg:px-4 lg:py-3 text-white text-sm xl:text-lg self-end" type="button" onClick={onCopyToClipboard}><span>copy url</span></button>
+          </CopyToClipboard>
+        </div>
       </div>
     </div>
   )
