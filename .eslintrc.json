@@ -1,3 +1,88 @@
 {
-  "extends": ["next", "prettier"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "next",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier",
+    "import"
+  ],
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "newlines-between": "never",
+        "groups": [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "builtin"
+        ]
+      }
+    ],
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-unused-vars": "off",
+    "prettier/prettier": [
+      "error"
+    ],
+    "react/react-in-jsx-scope": [
+      "error"
+    ],
+    "react/prop-types": [
+      "error"
+    ],
+    "react/require-default-props": [
+      "error"
+    ],
+    "jsx-a11y/no-access-key": "off",
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "@next/next/no-html-link-for-pages": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "semi": [
+      "error",
+      "always"
+    ],
+    "@next/next/no-img-element": "off",
+    "prefer-const": [
+      "warn",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 135,
+        "ignoreTemplateLiterals": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true
+      }
+    ]
+  },
+  "globals": {
+    "document": true,
+    "window": true,
+    "process": true,
+    "FormData": true
+  }
 }
