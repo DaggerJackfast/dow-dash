@@ -3,13 +3,21 @@ const nextConfig = {
   publicRuntimeConfig: {
     apiUrl: process.env.API_URL,
     socketUrl: process.env.WEBSOCKET_HOST,
-    mode: process.env.NODE_ENV
+    mode: process.env.NODE_ENV,
   },
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    unoptimized: true
-  }
-}
+    unoptimized: true,
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
 
-module.exports = nextConfig
+    return config;
+  },
+};
+
+module.exports = nextConfig;
