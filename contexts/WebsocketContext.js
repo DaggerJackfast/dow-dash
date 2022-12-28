@@ -1,22 +1,31 @@
-import {createContext, useCallback, useContext, useEffect, useState} from 'react';
-import {io} from 'socket.io-client';
-import Cookies from 'js-cookie';
+import React from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import Cookies from "js-cookie";
+import PropTypes from "prop-types";
+import { io } from "socket.io-client";
+import { childrenProps } from "../lib/prop-types";
 
 export const WebsocketContext = createContext(null);
 
 export const useSocket = () => useContext(WebsocketContext);
 
-export const WebsocketProvider = ({children, socketUrl}) => {
-  const accessToken = Cookies.get('token');
+export const WebsocketProvider = ({ children, socketUrl }) => {
+  const accessToken = Cookies.get("token");
   const [socket, setSocket] = useState(null);
   const connectSocket = useCallback(() => {
     const ioSocket = io(socketUrl, {
       reconnection: true,
-      transports: ['websocket'],
+      transports: ["websocket"],
       auth: { token: accessToken },
     });
     setSocket(ioSocket);
-  }, [socketUrl, accessToken])
+  }, [socketUrl, accessToken]);
 
   const disconnectSocket = useCallback(() => {
     socket?.disconnect();
@@ -27,13 +36,22 @@ export const WebsocketProvider = ({children, socketUrl}) => {
     connectSocket();
 
     return () => {
-      disconnectSocket()
-    }
-  },[connectSocket])
+      disconnectSocket();
+    };
+  }, [connectSocket]);
 
   return (
-    <WebsocketContext.Provider value={socket} >
+    <WebsocketContext.Provider value={socket}>
       {children}
     </WebsocketContext.Provider>
-  )
-}
+  );
+};
+
+WebsocketProvider.propTypes = {
+  socketUrl: PropTypes.string,
+  children: childrenProps.isRequired,
+};
+WebsocketProvider.defaultProps = {
+  socketUrl: "",
+  exclude: [],
+};

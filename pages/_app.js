@@ -1,29 +1,38 @@
-import React from 'react';
-import '../styles/globals.scss'
-import {ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import 'react-circular-progressbar/dist/styles.css';
-import {WebsocketProvider} from "../contexts/WebsocketContext";
-import {AuthProvider, Protected} from "../contexts/AuthContext";
+import React from "react";
 import Head from "next/head";
+import PropTypes from "prop-types";
+import "../styles/globals.scss";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "react-circular-progressbar/dist/styles.css";
 import Favicon from "../components/Favicon";
-const excludedPages = ['/login'];
-function MyApp({Component, pageProps}) {
-  return (
-    <>
-      <Head>
-        <Favicon/>
-      </Head>
-      <AuthProvider apiUrl={pageProps.apiUrl} >
-        <Protected exclude={excludedPages}>
-          <WebsocketProvider socketUrl={pageProps.socketUrl}>
-            <Component {...pageProps}/>
-          </WebsocketProvider>
-        </Protected>
-      </AuthProvider>
-      <ToastContainer/>
-    </>
-  )
-}
+import { AuthProvider, Protected } from "../contexts/AuthContext";
+import { WebsocketProvider } from "../contexts/WebsocketContext";
 
-export default MyApp
+const excludedPages = ["/login"];
+const MyApp = ({ Component, pageProps }) => (
+  <>
+    <Head>
+      <Favicon />
+    </Head>
+    <AuthProvider apiUrl={pageProps.apiUrl}>
+      <Protected exclude={excludedPages}>
+        <WebsocketProvider socketUrl={pageProps.socketUrl}>
+          <Component {...pageProps} />
+        </WebsocketProvider>
+      </Protected>
+    </AuthProvider>
+    <ToastContainer />
+  </>
+);
+MyApp.propTypes = {
+  Component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
+  pageProps: PropTypes.shape({
+    apiUrl: PropTypes.string,
+    socketUrl: PropTypes.string,
+  }),
+};
+MyApp.defaultProps = {
+  pageProps: {},
+};
+export default MyApp;

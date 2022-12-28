@@ -1,16 +1,18 @@
-import {createContext, useContext, useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import React from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import _ from "lodash";
+import { useRouter } from "next/router";
+import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 import LoadingScreen from "../components/LoadingScreen";
-import Cookies from 'js-cookie';
-import axios from 'axios';
-import {toast} from "react-toastify";
-import _ from 'lodash';
-import getConfig from "next/config";
+import { childrenProps } from "../lib/prop-types";
 export const AuthContext = createContext(null);
 
-const TOKEN_COOKIE_KEY = 'token';
+const TOKEN_COOKIE_KEY = "token";
 
-export const AuthProvider = ({children, apiUrl}) => {
+export const AuthProvider = ({ children, apiUrl }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,90 +22,107 @@ export const AuthProvider = ({children, apiUrl}) => {
       if (token) {
         try {
           const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          };
           const response = await axios.get(`${apiUrl}/auth/me`, { headers });
           const { data } = await response;
           if (data) {
             setUser(data);
           }
         } catch (e) {
-          const { status } = _.get(e, 'response', {})
-          if(status === 401) {
-              await router.push('/login')
-            }
+          const { status } = _.get(e, "response", {});
+          if (status === 401) {
+            await router.push("/login");
           }
         }
-      else {
+      } else {
         setIsLoading(false);
-        await router.push('/login');
+        await router.push("/login");
       }
-    }
+    };
     loadUserFromCookies().then();
   }, [apiUrl]);
 
-  const login = async ({username, password}) => {
+  const login = async ({ username, password }) => {
     try {
-      const response = await axios.post(`${apiUrl}/auth/login`, {username, password} ,{
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${apiUrl}/auth/login`,
+        { username, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      })
-        const {user, token} = response.data;
-        if (token) {
-          const {accessToken, expiresIn} = token;
-          const seconds = parseInt(expiresIn, 10);
-          const expiresDays = seconds / 60 / 60 / 24
-          Cookies.set(TOKEN_COOKIE_KEY, accessToken, {expires: expiresDays});
-          setUser(user);
-          await router.push('/');
+      );
+      const { user, token } = response.data;
+      if (token) {
+        const { accessToken, expiresIn } = token;
+        const seconds = parseInt(expiresIn, 10);
+        const expiresDays = seconds / 60 / 60 / 24;
+        Cookies.set(TOKEN_COOKIE_KEY, accessToken, { expires: expiresDays });
+        setUser(user);
+        await router.push("/");
       }
-    } catch(e) {
-      const {data, status} = _.get(e, 'response', {})
-      if(status === 401 && data) {
-        if(data?.message) {
-          const {message} = data;
+    } catch (e) {
+      const { data, status } = _.get(e, "response", {});
+      if (status === 401 && data) {
+        if (data?.message) {
+          const { message } = data;
           toast.error(message, {
-            position: 'bottom-right',
+            position: "bottom-right",
             hideProgressBar: false,
             autoClose: 3000,
           });
         }
       }
     }
-  }
+  };
 
   const logout = () => {
     Cookies.remove(TOKEN_COOKIE_KEY);
     setUser(null);
-    router.push('/login');
-  }
+    router.push("/login");
+  };
 
   return (
-    <AuthContext.Provider value={{
-      isAuthenticated: !!user,
-      user,
-      login,
-      logout,
-      isLoading,
-    }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated: !!user,
+        user,
+        login,
+        logout,
+        isLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
+
+AuthProvider.propTypes = {
+  apiUrl: PropTypes.string,
+  children: childrenProps.isRequired,
+};
+AuthProvider.defaultProps = {
+  apiUrl: "",
+  exclude: [],
+};
 
 export const useAuth = () => useContext(AuthContext);
 
-export const Protected = ({ exclude, children}) => {
-  const {isAuthenticated, isLoading} = useAuth();
+export const Protected = ({ exclude, children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  if(isLoading || (!isAuthenticated && !exclude.includes(router.pathname))) {
-    return <LoadingScreen />
+  if (isLoading || (!isAuthenticated && !exclude.includes(router.pathname))) {
+    return <LoadingScreen />;
   }
   return children;
-}
-
+};
+Protected.propTypes = {
+  exclude: PropTypes.arrayOf(PropTypes.string),
+  children: childrenProps.isRequired,
+};
 Protected.defaultProps = {
   exclude: [],
-}
+};

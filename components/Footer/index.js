@@ -1,4 +1,4 @@
-
+import React from "react";
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
@@ -7,6 +7,6 @@ const Footer = () => {
         Dow Dash {year}
       </div>
     </footer>
-  )
-}
+  );
+};
 export default Footer;
