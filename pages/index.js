@@ -3,6 +3,7 @@ import _ from "lodash";
 import getConfig from "next/config";
 import Head from "next/head";
 import Container from "../components/Container";
+import File from "../components/File";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { Tabs, TabList, Tab, TabBody, TabPanel } from "../components/Tab";
@@ -14,6 +15,7 @@ import TasksIcon from "../public/icons/tasks-icon.svg";
 const Home = () => {
   const connectEvent = "connect";
   const tasksEvent = "tasks";
+  const filesEvent = "files";
   const downloadProgressEvent = "download-progress";
   const uploadProgressEvent = "upload-progress";
   const deleteTaskEvent = "delete-task";
@@ -21,12 +23,14 @@ const Home = () => {
   const filesTab = "files";
   const [activeTab, setActiveTab] = useState(tasksTab);
   const [tasks, setTasks] = useState([]);
+  const [files, setFiles] = useState([]);
   const [downloadProgress, setDownloadProgress] = useState({});
   const [uploadProgress, setUploadProgress] = useState({});
 
   const socket = useSocket();
   const startEmit = useCallback(() => {
     socket.emit(tasksEvent);
+    socket.emit(filesEvent);
     socket.emit(downloadProgressEvent);
     socket.emit(uploadProgressEvent);
   }, [socket]);
@@ -42,6 +46,9 @@ const Home = () => {
     });
     socket.on(tasksEvent, (tasksPayload) => {
       setTasks(tasksPayload);
+    });
+    socket.on(filesEvent, (filesPayload) => {
+      setFiles(filesPayload);
     });
     socket.on(downloadProgressEvent, (payload) => {
       if (_.isObject(payload)) {
@@ -114,7 +121,16 @@ const Home = () => {
                 </div>
               </TabPanel>
               <TabPanel show={activeTab === filesTab} id={filesTab}>
-                second tab
+                <div className="flex align-center flex-row flex-wrap justify-start w-10/12 lg:w-2/3 mx-auto">
+                  {files.map((file) => (
+                    <File
+                      key={file.path}
+                      name={file.name}
+                      mimeType={file.mimeType}
+                      size={file.size}
+                    />
+                  ))}
+                </div>
               </TabPanel>
             </TabBody>
           </Tabs>
