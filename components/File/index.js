@@ -10,11 +10,11 @@ const File = ({ name, path, mimeType, size }) => {
         </div>
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <span className="text-xl font-bold font-light">type</span>
+            <span className="text-sm font-bold font-light">type</span>
             <span className="font-mono">{mimeType}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold font-light">size</span>
+            <span className="text-sm font-bold font-light">size</span>
             <span className="font-mono">{humanFileSize(size)}</span>
           </div>
         </div>
