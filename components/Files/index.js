@@ -79,32 +79,34 @@ const Files = ({ files, onDelete }) => {
   return (
     <>
       <div className="w-10/12 lg:w-2/3 mx-auto">
-        <div className="flex content-center items-center border border-gray-200 p-4 rounded-lg m-1 mb-4">
-          <div className="mr-5">
-            <input
-              onChange={onSelect}
-              ref={checkboxRef}
-              type="checkbox"
-              checked={checked}
-              className="w-5 h-5 bg-gray-100 border-gray-300 rounded focus:none dark:focus:none dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-          </div>
-          <button
-            disabled={!selectedLength}
-            className="btn bg-red-500 text-white px-4 py-2 rounded-lg disabled:bg-red-300"
-            onClick={onDeleteClick}
-          >
-            <span>delete</span>
-          </button>
-          {selectedLength > 0 && (
-            <div className="ml-5 font-light">
-              <span>
-                selected: {selectedLength}{" "}
-                {selectedLength > 1 ? <>files</> : <>file</>}
-              </span>
+        {files?.length > 0 && (
+          <div className="flex content-center items-center border border-gray-200 p-4 rounded-lg m-1 mb-4">
+            <div className="mr-5">
+              <input
+                onChange={onSelect}
+                ref={checkboxRef}
+                type="checkbox"
+                checked={checked}
+                className="w-5 h-5 bg-gray-100 border-gray-300 rounded focus:none dark:focus:none dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
             </div>
-          )}
-        </div>
+            <button
+              disabled={!selectedLength}
+              className="btn bg-red-500 text-white px-4 py-2 rounded-lg disabled:bg-red-300"
+              onClick={onDeleteClick}
+            >
+              <span>delete</span>
+            </button>
+            {selectedLength > 0 && (
+              <div className="ml-5 font-light">
+                <span>
+                  selected: {selectedLength}{" "}
+                  {selectedLength > 1 ? <>files</> : <>file</>}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
         <div className="flex align-center flex-row flex-wrap justify-start">
           {files.map((file) => (
             <File
