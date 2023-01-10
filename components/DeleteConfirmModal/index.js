@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CloseIcon from "../../../public/icons/close-icon.svg";
-import WarningIcon from "../../../public/icons/warning-icon.svg";
-import Modal from "../../Modal";
+import CloseIcon from "../../public/icons/close-icon.svg";
+import WarningIcon from "../../public/icons/warning-icon.svg";
+import Modal from "../Modal";
 
-const DeleteConfirmModal = ({ onConfirm, onClose, show }) => {
+const DeleteConfirmModal = ({ onConfirm, onClose, show, title }) => {
   return (
     <Modal show={show} onOverlayClick={onClose}>
       <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-50 overflow-x-hidden overflow-y-auto">
@@ -21,7 +21,7 @@ const DeleteConfirmModal = ({ onConfirm, onClose, show }) => {
             <div className="p-6 text-center">
               <WarningIcon className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" />
               <h3 className="mb-5 text-xs lg:text-lg font-normal text-gray-500 dark:text-gray-400">
-                Are you sure you want to delete this task?
+                {title}
               </h3>
               <button
                 onClick={onConfirm}
@@ -46,6 +46,7 @@ const DeleteConfirmModal = ({ onConfirm, onClose, show }) => {
 };
 
 DeleteConfirmModal.propTypes = {
+  title: PropTypes.string.isRequired,
   onConfirm: PropTypes.func,
   onClose: PropTypes.func,
   show: PropTypes.bool,

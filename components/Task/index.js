@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
-import DeleteConfirmModal from "./DeleteConfirmModal";
+import DeleteConfirmModal from "../DeleteConfirmModal";
 
 const stageClasses = Object.freeze({
   created: "",
@@ -89,6 +89,7 @@ const Task = ({ name, datetime, url, stage, download, upload, onDelete }) => {
         </div>
       </div>
       <DeleteConfirmModal
+        title="Are you sure you want to delete this task?"
         onConfirm={() => onDelete()}
         onClose={() => onClose()}
         show={showDeleteConfirm}
