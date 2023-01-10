@@ -3,7 +3,7 @@ import _ from "lodash";
 import getConfig from "next/config";
 import Head from "next/head";
 import Container from "../components/Container";
-import File from "../components/File";
+import Files from "../components/Files";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { Tabs, TabList, Tab, TabBody, TabPanel } from "../components/Tab";
@@ -19,6 +19,7 @@ const Home = () => {
   const downloadProgressEvent = "download-progress";
   const uploadProgressEvent = "upload-progress";
   const deleteTaskEvent = "delete-task";
+  const deleteFileEvent = "delete-file";
   const tasksTab = "tasks";
   const filesTab = "files";
   const [activeTab, setActiveTab] = useState(tasksTab);
@@ -36,6 +37,10 @@ const Home = () => {
   }, [socket]);
 
   const onTaskDelete = (task) => socket.emit(deleteTaskEvent, { id: task.id });
+
+  const onFilesDelete = (files) => {
+    _.forEach(files, (file) => socket.emit(deleteFileEvent, { name: file }));
+  };
 
   useEffect(() => {
     if (!socket) {
@@ -121,16 +126,7 @@ const Home = () => {
                 </div>
               </TabPanel>
               <TabPanel show={activeTab === filesTab} id={filesTab}>
-                <div className="flex align-center flex-row flex-wrap justify-start w-10/12 lg:w-2/3 mx-auto">
-                  {files.map((file) => (
-                    <File
-                      key={file.path}
-                      name={file.name}
-                      mimeType={file.mimeType}
-                      size={file.size}
-                    />
-                  ))}
-                </div>
+                <Files files={files} onDelete={onFilesDelete} />
               </TabPanel>
             </TabBody>
           </Tabs>

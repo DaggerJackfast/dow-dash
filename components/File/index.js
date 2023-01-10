@@ -1,10 +1,17 @@
 import React from "react";
+import cx from "classnames";
 import PropTypes from "prop-types";
 import { humanFileSize } from "../../lib/utils";
-const File = ({ name, path, mimeType, size }) => {
+const File = ({ name, path, mimeType, size, selected, onClick }) => {
   return (
     <>
-      <div className="border color rounded-lg m-1 p-4 w-1/4">
+      <div
+        className={cx("border color rounded-lg m-1 p-4 w-1/4 cursor-pointer", {
+          ["bg-green-100"]: selected,
+        })}
+        role="presentation"
+        onClick={() => onClick()}
+      >
         <div className="text-xl pb-4 overflow-hidden whitespace-nowrap text-ellipsis">
           <span className="font-bold font-light">{name}</span>
         </div>
@@ -27,11 +34,15 @@ File.propTypes = {
   path: PropTypes.string,
   mimeType: PropTypes.string,
   size: PropTypes.number,
+  selected: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 File.defaultProps = {
   name: "",
   path: "",
   mimeType: "",
   size: 0,
+  selected: false,
+  onClick: () => {},
 };
 export default File;
