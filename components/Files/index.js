@@ -113,6 +113,7 @@ const Files = ({ files, onDelete }) => {
               key={file.path}
               name={file.name}
               mimeType={file.mimeType}
+              isDirectory={file.isDirectory}
               size={file.size}
               selected={isSelected(file)}
               onClick={() => toggleSelected(file)}
@@ -136,6 +137,7 @@ Files.propTypes = {
       name: PropTypes.string,
       mimeType: PropTypes.string,
       size: PropTypes.number,
+      isDirectory: PropTypes.bool,
     })
   ),
   onDelete: PropTypes.func,
