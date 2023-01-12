@@ -27,6 +27,7 @@ const Home = () => {
   const [files, setFiles] = useState([]);
   const [downloadProgress, setDownloadProgress] = useState({});
   const [uploadProgress, setUploadProgress] = useState({});
+  const [uploadMessage, setUploadMessage] = useState({});
 
   const socket = useSocket();
   const startEmit = useCallback(() => {
@@ -65,6 +66,9 @@ const Home = () => {
       if (payload) {
         const { data } = payload;
         setUploadProgress({ [data.id]: data.progress });
+        if (data.message) {
+          setUploadMessage({ [data.id]: data.message });
+        }
       }
     });
     startEmit();
@@ -120,6 +124,7 @@ const Home = () => {
                       stage={task.stage}
                       download={_.get(downloadProgress, task.id, 0)}
                       upload={_.get(uploadProgress, task.id, 0)}
+                      message={_.get(uploadMessage, task.id, "")}
                       onDelete={() => onTaskDelete(task)}
                     />
                   ))}

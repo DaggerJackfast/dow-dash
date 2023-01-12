@@ -15,7 +15,16 @@ const stageClasses = Object.freeze({
   deleted: "text-red-600 border-red-600",
 });
 
-const Task = ({ name, datetime, url, stage, download, upload, onDelete }) => {
+const Task = ({
+  name,
+  datetime,
+  url,
+  stage,
+  download,
+  upload,
+  message,
+  onDelete,
+}) => {
   const onCopyToClipboard = () => {
     toast.info(`Url of task "${name}" is copied to clipboard`, {
       position: "bottom-right",
@@ -52,14 +61,14 @@ const Task = ({ name, datetime, url, stage, download, upload, onDelete }) => {
         </div>
         <div className="flex justify-between align-center content-center">
           <div className="flex ml-2 mt-4">
-            <div className="w-12 lx:w-16 mr-3 lx:mr-16 last-of-type:mr-0">
+            <div className="w-12 mr-3 last-of-type:mr-0">
               <CircularProgressbar
                 value={download}
                 maxValue={1}
                 text={`${(download * 100).toFixed(2)}%`}
               />
             </div>
-            <div className="w-12 lx:w-16 mr-3 xl:mr-16 last-of-type:mr-0">
+            <div className="w-12 mr-3 last-of-type:mr-0">
               <CircularProgressbar
                 className="green-progress"
                 maxValue={1}
@@ -67,6 +76,11 @@ const Task = ({ name, datetime, url, stage, download, upload, onDelete }) => {
                 text={`${(upload * 100).toFixed(2)}%`}
               />
             </div>
+            {message && (
+              <div className="mr-3 last-of-type:mr-0 flex items-center">
+                <span>{message}</span>
+              </div>
+            )}
           </div>
           <div>
             <button
@@ -106,6 +120,7 @@ Task.propTypes = {
   download: PropTypes.number,
   upload: PropTypes.number,
   onDelete: PropTypes.func,
+  message: PropTypes.string,
 };
 
 Task.defaultProps = {
@@ -115,6 +130,7 @@ Task.defaultProps = {
   stage: 0,
   download: 0,
   upload: 0,
+  message: "",
   onDelete: () => {},
 };
 
