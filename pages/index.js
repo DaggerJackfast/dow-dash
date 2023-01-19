@@ -114,24 +114,36 @@ const Home = () => {
             </TabList>
             <TabBody>
               <TabPanel show={activeTab === tasksTab} id={tasksTab}>
-                <div className="flex align-center flex-col justify-center w-10/12 lg:w-1/3 mx-auto">
-                  {tasks.map((task) => (
-                    <Task
-                      key={task.id}
-                      name={task.name}
-                      url={task.url}
-                      datetime={task.datetime}
-                      stage={task.stage}
-                      download={_.get(downloadProgress, task.id, 0)}
-                      upload={_.get(uploadProgress, task.id, 0)}
-                      message={_.get(uploadMessage, task.id, "")}
-                      onDelete={() => onTaskDelete(task)}
-                    />
-                  ))}
-                </div>
+                {tasks.length ? (
+                  <div className="flex align-center flex-col justify-center w-10/12 lg:w-1/3 mx-auto">
+                    {tasks.map((task) => (
+                      <Task
+                        key={task.id}
+                        name={task.name}
+                        url={task.url}
+                        datetime={task.datetime}
+                        stage={task.stage}
+                        download={_.get(downloadProgress, task.id, 0)}
+                        upload={_.get(uploadProgress, task.id, 0)}
+                        message={_.get(uploadMessage, task.id, "")}
+                        onDelete={() => onTaskDelete(task)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="ml-5 text-gray-600">
+                    <span>no tasks</span>
+                  </div>
+                )}
               </TabPanel>
               <TabPanel show={activeTab === filesTab} id={filesTab}>
-                <Files files={files} onDelete={onFilesDelete} />
+                {files.length > 0 ? (
+                  <Files files={files} onDelete={onFilesDelete} />
+                ) : (
+                  <div className="ml-5 text-gray-600">
+                    <span>no files</span>
+                  </div>
+                )}
               </TabPanel>
             </TabBody>
           </Tabs>
