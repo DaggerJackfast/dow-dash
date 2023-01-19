@@ -31,7 +31,7 @@ const File = ({
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold font-light">size</span>
-            <span className="font-mono">{humanFileSize(size)}</span>
+            <span className="font-mono">{humanFileSize(size, true)}</span>
           </div>
         </div>
       </div>
