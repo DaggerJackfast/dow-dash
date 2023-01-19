@@ -14,23 +14,30 @@ const File = ({
   return (
     <>
       <div
-        className={cx("border color rounded-lg m-1 p-4 w-1/4 cursor-pointer", {
-          ["bg-green-100"]: selected,
-          ["bg-gray-200"]: isDirectory,
-        })}
+        className={cx(
+          "border color rounded-lg m-1 p-4 w-full lg:w-1/4 cursor-pointer",
+          {
+            ["bg-green-100"]: selected,
+            ["bg-gray-200"]: isDirectory,
+          }
+        )}
         role="presentation"
         onClick={() => onClick()}
       >
-        <div className="text-xl pb-4 overflow-hidden whitespace-nowrap text-ellipsis">
+        <div className="test-sm xl:text-xl pb-4 overflow-hidden whitespace-nowrap text-ellipsis">
           <span className="font-bold font-light">{name}</span>
         </div>
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <span className="text-sm font-bold font-light">type</span>
+            <span className="text-xs sm:text-sm font-bold font-light">
+              type
+            </span>
             <span className="font-mono">{mimeType}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold font-light">size</span>
+            <span className="text-xs sm:text-sm font-bold font-light">
+              size
+            </span>
             <span className="font-mono">{humanFileSize(size, true)}</span>
           </div>
         </div>
