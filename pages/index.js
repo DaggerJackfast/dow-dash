@@ -87,13 +87,13 @@ const Home = () => {
         <meta name="description" content="Dow bot dashboard" />
       </Head>
       <Header />
-      <main className="min-h-screen py-16 flex-1 flex flex-col justify-center align-center">
-        <Container>
+      <main className="min-h-[calc(100vh_-_8rem)] py-16 flex-1 flex flex-col align-center">
+        <Container className="flex flex-col flex-1">
           <h1 className="mb-4 text-3xl xl:text-6xl text-center">Dow Dash</h1>
           <p className="text-center">
             Dashboard for getting information about task processes
           </p>
-          <Tabs>
+          <Tabs className="flex-1 border-none">
             <TabList>
               <Tab
                 active={activeTab === tasksTab}
