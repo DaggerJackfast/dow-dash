@@ -137,7 +137,7 @@ const Home = () => {
                 )}
               </TabPanel>
               <TabPanel show={activeTab === filesTab} id={filesTab}>
-                {files.length > 0 ? (
+                {files.length ? (
                   <Files files={files} onDelete={onFilesDelete} />
                 ) : (
                   <div className="ml-5 text-gray-600">
