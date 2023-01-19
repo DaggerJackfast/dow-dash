@@ -15,7 +15,7 @@ const File = ({
     <>
       <div
         className={cx(
-          "border color rounded-lg m-1 p-4 w-full lg:w-1/4 cursor-pointer",
+          "border color rounded-lg m-1 p-4 w-full lg:w-1/2 xl:w-1/4 cursor-pointer",
           {
             ["bg-green-100"]: selected,
             ["bg-gray-200"]: isDirectory,
