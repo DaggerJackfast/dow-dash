@@ -11,8 +11,7 @@ export const Tab = ({ children, className, id, onClick, active }) => {
       className={cx("mr-2", { [className]: !!className })}
       onClick={onClick}
     >
-      <a
-        href="#"
+      <button
         className={cx(
           "inline-flex content-center items-center p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group",
           {
@@ -21,7 +20,7 @@ export const Tab = ({ children, className, id, onClick, active }) => {
         )}
       >
         {children}
-      </a>
+      </button>
     </li>
   );
 };
