@@ -78,6 +78,7 @@ const Home = () => {
       socket.off(tasksEvent);
       socket.off(downloadProgressEvent);
       socket.off(uploadProgressEvent);
+      socket.off(filesEvent);
     };
   }, [socket]);
   return (
