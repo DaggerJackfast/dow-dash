@@ -58,7 +58,11 @@ export const AuthProvider = ({ children, apiUrl, tokenKey }) => {
         const { accessToken, expiresIn } = token;
         const seconds = parseInt(expiresIn, 10);
         const expiresDays = seconds / 60 / 60 / 24;
-        Cookies.set(tokenKey, accessToken, { expires: expiresDays });
+        Cookies.set(tokenKey, accessToken, {
+          expires: expiresDays,
+          secure: true,
+          sameSite: "strict",
+        });
         setUser(user);
         await router.push("/");
       }
