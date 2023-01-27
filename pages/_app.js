@@ -15,9 +15,12 @@ const MyApp = ({ Component, pageProps }) => (
     <Head>
       <Favicon />
     </Head>
-    <AuthProvider apiUrl={pageProps.apiUrl}>
+    <AuthProvider apiUrl={pageProps.apiUrl} tokenKey={pageProps.tokenKey}>
       <Protected exclude={excludedPages}>
-        <WebsocketProvider socketUrl={pageProps.socketUrl}>
+        <WebsocketProvider
+          socketUrl={pageProps.socketUrl}
+          tokenKey={pageProps.tokenKey}
+        >
           <Component {...pageProps} />
         </WebsocketProvider>
       </Protected>
@@ -30,6 +33,7 @@ MyApp.propTypes = {
   pageProps: PropTypes.shape({
     apiUrl: PropTypes.string,
     socketUrl: PropTypes.string,
+    tokenKey: PropTypes.string,
   }),
 };
 MyApp.defaultProps = {

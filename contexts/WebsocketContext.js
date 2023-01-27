@@ -15,8 +15,8 @@ export const WebsocketContext = createContext(null);
 
 export const useSocket = () => useContext(WebsocketContext);
 
-export const WebsocketProvider = ({ children, socketUrl }) => {
-  const accessToken = Cookies.get("token");
+export const WebsocketProvider = ({ children, socketUrl, tokenKey }) => {
+  const accessToken = Cookies.get(tokenKey);
   const [socket, setSocket] = useState(null);
   const connectSocket = useCallback(() => {
     const ioSocket = io(socketUrl, {
@@ -50,8 +50,10 @@ export const WebsocketProvider = ({ children, socketUrl }) => {
 WebsocketProvider.propTypes = {
   socketUrl: PropTypes.string,
   children: childrenProps.isRequired,
+  tokenKey: PropTypes.string,
 };
 WebsocketProvider.defaultProps = {
   socketUrl: "",
   exclude: [],
+  tokenKey: "",
 };

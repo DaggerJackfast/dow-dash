@@ -10,15 +10,13 @@ import LoadingScreen from "../components/LoadingScreen";
 import { childrenProps } from "../lib/prop-types";
 export const AuthContext = createContext(null);
 
-const TOKEN_COOKIE_KEY = "token";
-
-export const AuthProvider = ({ children, apiUrl }) => {
+export const AuthProvider = ({ children, apiUrl, tokenKey }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const loadUserFromCookies = async () => {
-      const token = Cookies.get(TOKEN_COOKIE_KEY);
+      const token = Cookies.get(tokenKey);
       if (token) {
         try {
           const headers = {
@@ -60,7 +58,7 @@ export const AuthProvider = ({ children, apiUrl }) => {
         const { accessToken, expiresIn } = token;
         const seconds = parseInt(expiresIn, 10);
         const expiresDays = seconds / 60 / 60 / 24;
-        Cookies.set(TOKEN_COOKIE_KEY, accessToken, { expires: expiresDays });
+        Cookies.set(tokenKey, accessToken, { expires: expiresDays });
         setUser(user);
         await router.push("/");
       }
@@ -80,7 +78,7 @@ export const AuthProvider = ({ children, apiUrl }) => {
   };
 
   const logout = () => {
-    Cookies.remove(TOKEN_COOKIE_KEY);
+    Cookies.remove(tokenKey);
     setUser(null);
     router.push("/login");
   };
@@ -103,10 +101,12 @@ export const AuthProvider = ({ children, apiUrl }) => {
 AuthProvider.propTypes = {
   apiUrl: PropTypes.string,
   children: childrenProps.isRequired,
+  tokenKey: PropTypes.string,
 };
 AuthProvider.defaultProps = {
   apiUrl: "",
   exclude: [],
+  tokenKey: "",
 };
 
 export const useAuth = () => useContext(AuthContext);

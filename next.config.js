@@ -4,6 +4,7 @@ const nextConfig = {
     apiUrl: process.env.API_URL,
     socketUrl: process.env.WEBSOCKET_HOST,
     mode: process.env.NODE_ENV,
+    tokenKey: process.env.TOKEN_KEY || "token",
   },
   reactStrictMode: true,
   swcMinify: true,
