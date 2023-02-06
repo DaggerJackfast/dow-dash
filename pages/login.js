@@ -48,12 +48,12 @@ const Login = () => {
                             <input
                               type="text"
                               className="form-control block w-full px-3 py-1.5 text-base font-normal text-slate-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-slate-600 focus:outline-none"
-                              id="exampleFormControlInput1"
                               placeholder="Username"
                               onChange={(e) =>
                                 onChange("username", e.target.value)
                               }
                               value={formData?.username}
+                              autoComplete="username"
                               required
                             />
                           </div>
@@ -61,12 +61,12 @@ const Login = () => {
                             <input
                               type="password"
                               className="form-control block w-full px-3 py-1.5 text-base font-normal text-slate-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-slate-600 focus:outline-none"
-                              id="exampleFormControlInput1"
                               placeholder="Password"
                               onChange={(e) =>
                                 onChange("password", e.target.value)
                               }
                               value={formData?.password}
+                              autoComplete="current-password"
                               required
                             />
                           </div>
@@ -91,6 +91,7 @@ const Login = () => {
                             width={600}
                             height={600}
                             alt="User Logo"
+                            priority
                           />
                         </p>
                       </div>
@@ -108,6 +109,7 @@ const Login = () => {
 Login.getInitialProps = async () => {
   const { publicRuntimeConfig } = getConfig();
   const { apiUrl, socketUrl, tokenKey } = publicRuntimeConfig;
-  return { apiUrl, socketUrl, tokenKey };
+  const isProtected = false;
+  return { apiUrl, socketUrl, tokenKey, isProtected };
 };
 export default Login;

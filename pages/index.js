@@ -158,6 +158,7 @@ const Home = () => {
 Home.getInitialProps = async () => {
   const { publicRuntimeConfig } = getConfig();
   const { apiUrl, socketUrl, tokenKey } = publicRuntimeConfig;
-  return { apiUrl, socketUrl, tokenKey };
+  const isProtected = true;
+  return { apiUrl, socketUrl, tokenKey, isProtected };
 };
 export default Home;

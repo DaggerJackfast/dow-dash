@@ -10,38 +10,41 @@ import LoadingScreen from "../components/LoadingScreen";
 import { childrenProps } from "../lib/prop-types";
 export const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children, apiUrl, tokenKey }) => {
+export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    const loadUserFromCookies = async () => {
-      const token = Cookies.get(tokenKey);
-      if (token) {
-        try {
-          const headers = {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          };
-          const response = await axios.get(`${apiUrl}/auth/me`, { headers });
-          const { data } = await response;
-          if (data) {
-            setUser(data);
-          }
-        } catch (e) {
-          const { status } = _.get(e, "response", {});
-          if (status === 401) {
-            await router.push("/login");
-          }
+    loadUserFromCookies().then();
+  }, [apiUrl, tokenKey]);
+
+  const loadUserFromCookies = async () => {
+    const token = Cookies.get(tokenKey);
+    if (token) {
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+        const response = await axios.get(`${apiUrl}/auth/me`, { headers });
+        const { data } = await response;
+        if (data) {
+          setUser(data);
         }
-      } else {
-        setIsLoading(false);
+      } catch (e) {
+        const { status } = _.get(e, "response", {});
+        if (status === 401) {
+          await router.push("/login");
+        }
+      }
+    } else {
+      setIsLoading(false);
+      if (isProtected) {
         await router.push("/login");
       }
-    };
-    loadUserFromCookies().then();
-  }, [apiUrl]);
-
+    }
+  };
   const login = async ({ username, password }) => {
     try {
       const response = await axios.post(
@@ -81,10 +84,10 @@ export const AuthProvider = ({ children, apiUrl, tokenKey }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     Cookies.remove(tokenKey);
     setUser(null);
-    router.push("/login");
+    await router.push("/login");
   };
 
   return (
@@ -106,27 +109,30 @@ AuthProvider.propTypes = {
   apiUrl: PropTypes.string,
   children: childrenProps.isRequired,
   tokenKey: PropTypes.string,
+  isProtected: PropTypes.bool,
 };
 AuthProvider.defaultProps = {
   apiUrl: "",
-  exclude: [],
   tokenKey: "",
+  isProtected: false,
 };
 
 export const useAuth = () => useContext(AuthContext);
 
-export const Protected = ({ exclude, children }) => {
+export const Protected = ({ children, isProtected }) => {
   const { isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
-  if (isLoading || (!isAuthenticated && !exclude.includes(router.pathname))) {
+
+  const showLoading = isLoading || (!isAuthenticated && isProtected);
+
+  if (showLoading) {
     return <LoadingScreen />;
   }
   return children;
 };
 Protected.propTypes = {
-  exclude: PropTypes.arrayOf(PropTypes.string),
   children: childrenProps.isRequired,
+  isProtected: PropTypes.bool,
 };
 Protected.defaultProps = {
-  exclude: [],
+  isProtected: false,
 };

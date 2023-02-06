@@ -9,14 +9,17 @@ import Favicon from "../components/Favicon";
 import { AuthProvider, Protected } from "../contexts/AuthContext";
 import { WebsocketProvider } from "../contexts/WebsocketContext";
 
-const excludedPages = ["/login"];
 const MyApp = ({ Component, pageProps }) => (
   <>
     <Head>
       <Favicon />
     </Head>
-    <AuthProvider apiUrl={pageProps.apiUrl} tokenKey={pageProps.tokenKey}>
-      <Protected exclude={excludedPages}>
+    <AuthProvider
+      apiUrl={pageProps.apiUrl}
+      tokenKey={pageProps.tokenKey}
+      isProtected={pageProps.isProtected}
+    >
+      <Protected isProtected={pageProps.isProtected}>
         <WebsocketProvider
           socketUrl={pageProps.socketUrl}
           tokenKey={pageProps.tokenKey}
@@ -34,6 +37,7 @@ MyApp.propTypes = {
     apiUrl: PropTypes.string,
     socketUrl: PropTypes.string,
     tokenKey: PropTypes.string,
+    isProtected: PropTypes.bool,
   }),
 };
 MyApp.defaultProps = {
