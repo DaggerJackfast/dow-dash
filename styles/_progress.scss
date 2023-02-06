@@ -7,3 +7,13 @@
     fill: #2e9045!important;
   }
 }
+
+.black-progress {
+  .CircularProgressbar-path {
+    stroke: #171515 !important;
+  }
+
+  .CircularProgressbar-text {
+    fill: #171515 !important;
+  }
+}
