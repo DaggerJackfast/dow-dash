@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
+import useOverflowDetector from "../../hooks/use-overflow-detector";
 import DeleteConfirmModal from "../DeleteConfirmModal";
 
 const stageClasses = Object.freeze({
@@ -43,6 +44,8 @@ const Task = ({
 
   const stageName = Object.keys(stageClasses)[stage];
   const stageClass = _.get(stageClasses, stageName);
+
+  const { ref, overflow } = useOverflowDetector();
   return (
     <>
       <div
@@ -54,8 +57,14 @@ const Task = ({
           <span>{dayjs(datetime).format("YYYY-MM-DD, HH:MM")}</span>
         </div>
         <div className="flex">
-          <div className="overflow-hidden">
-            <h2 className="mb-4 text-sm xl:text-xl text-ellipsis">{name}</h2>
+          <div className="overflow-hidden" ref={ref}>
+            <h2
+              className={cx("mb-4 text-sm xl:text-xl text-ellipsis", {
+                ["animate-marquee"]: overflow,
+              })}
+            >
+              {name}
+            </h2>
             <span className="m-0 text-sm xl:text-xl">{stageName}</span>
           </div>
         </div>
