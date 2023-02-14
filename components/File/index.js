@@ -1,6 +1,7 @@
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
+import useOverflowDetector from "../../hooks/use-overflow-detector";
 import { humanFileSize } from "../../lib/utils";
 const File = ({
   name,
@@ -11,6 +12,7 @@ const File = ({
   selected,
   onClick,
 }) => {
+  const { ref, overflow } = useOverflowDetector();
   return (
     <>
       <div
@@ -24,8 +26,14 @@ const File = ({
         role="presentation"
         onClick={() => onClick()}
       >
-        <div className="test-sm xl:text-xl pb-4 overflow-hidden whitespace-nowrap text-ellipsis">
-          <span className="font-bold font-light">{name}</span>
+        <div className="test-sm xl:text-xl pb-4 overflow-hidden" ref={ref}>
+          <span
+            className={cx("block font-light text-ellipsis", {
+              ["animate-marquee"]: overflow,
+            })}
+          >
+            {name}
+          </span>
         </div>
         <div className="flex justify-between">
           <div className="flex flex-col">
