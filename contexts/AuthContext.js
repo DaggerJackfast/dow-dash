@@ -29,20 +29,19 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
         };
         const response = await axios.get(`${apiUrl}/auth/me`, { headers });
         const { data } = await response;
-        if (data) {
-          setUser(data);
-        }
+        if (!data) return;
+        setUser(data);
       } catch (e) {
         const { status } = _.get(e, "response", {});
         if (status === 401) {
           await router.push("/login");
         }
       }
-    } else {
-      setIsLoading(false);
-      if (isProtected) {
-        await router.push("/login");
-      }
+      return;
+    }
+    setIsLoading(false);
+    if (isProtected) {
+      await router.push("/login");
     }
   };
   const login = async ({ username, password }) => {
@@ -57,18 +56,17 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
         }
       );
       const { user, token } = response.data;
-      if (token) {
-        const { accessToken, expiresIn } = token;
-        const seconds = parseInt(expiresIn, 10);
-        const expiresDays = seconds / 60 / 60 / 24;
-        Cookies.set(tokenKey, accessToken, {
-          expires: expiresDays,
-          secure: true,
-          sameSite: "strict",
-        });
-        setUser(user);
-        await router.push("/");
-      }
+      if (!token) return;
+      const { accessToken, expiresIn } = token;
+      const seconds = parseInt(expiresIn, 10);
+      const expiresDays = seconds / 60 / 60 / 24;
+      Cookies.set(tokenKey, accessToken, {
+        expires: expiresDays,
+        secure: true,
+        sameSite: "strict",
+      });
+      setUser(user);
+      await router.push("/");
     } catch (e) {
       const { data, status } = _.get(e, "response", {});
       if (status === 401 && data) {
