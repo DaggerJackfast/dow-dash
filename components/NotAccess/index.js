@@ -50,4 +50,5 @@ NotAccess.propTypes = {
 NotAccess.defaultProps = {
   delay: 5,
 };
+
 export default NotAccess;

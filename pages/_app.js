@@ -5,8 +5,9 @@ import "../styles/globals.scss";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-circular-progressbar/dist/styles.css";
+import Protected from "../components/Auth/Protected";
 import Favicon from "../components/Favicon";
-import { AuthProvider, Protected } from "../contexts/AuthContext";
+import { AuthProvider } from "../contexts/AuthContext";
 import { WebsocketProvider } from "../contexts/WebsocketContext";
 
 const MyApp = ({ Component, pageProps }) => (
@@ -43,4 +44,5 @@ MyApp.propTypes = {
 MyApp.defaultProps = {
   pageProps: {},
 };
+
 export default MyApp;

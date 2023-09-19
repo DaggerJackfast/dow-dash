@@ -53,6 +53,7 @@ const ProfileDropdown = ({ user, logout }) => {
     </div>
   );
 };
+
 ProfileDropdown.propTypes = {
   user: PropTypes.shape({ username: PropTypes.string }),
   logout: PropTypes.func.isRequired,
@@ -60,4 +61,5 @@ ProfileDropdown.propTypes = {
 ProfileDropdown.defaultProps = {
   user: null,
 };
+
 export default ProfileDropdown;

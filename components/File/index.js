@@ -3,6 +3,7 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import useOverflowDetector from "../../hooks/use-overflow-detector";
 import { humanFileSize } from "../../lib/utils";
+
 const File = ({
   name,
   path,
@@ -53,6 +54,7 @@ const File = ({
     </>
   );
 };
+
 File.propTypes = {
   name: PropTypes.string,
   path: PropTypes.string,
@@ -71,4 +73,5 @@ File.defaultProps = {
   selected: false,
   onClick: () => {},
 };
+
 export default File;

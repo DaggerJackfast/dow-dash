@@ -112,4 +112,5 @@ Login.getInitialProps = async () => {
   const isProtected = false;
   return { apiUrl, socketUrl, tokenKey, isProtected };
 };
+
 export default Login;

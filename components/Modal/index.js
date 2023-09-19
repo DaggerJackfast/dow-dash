@@ -42,4 +42,5 @@ Modal.defaultProps = {
   show: false,
   onOverlayClick: () => {},
 };
+
 export default Modal;

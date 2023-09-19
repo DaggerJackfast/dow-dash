@@ -56,4 +56,5 @@ DeleteConfirmModal.defaultProps = {
   onClose: () => {},
   show: false,
 };
+
 export default DeleteConfirmModal;

@@ -51,6 +51,7 @@ const Files = ({ files, onDelete }) => {
     const { name } = file;
     return _.has(selected, name);
   };
+
   const toggleSelected = (file) => {
     const { name } = file;
     const newSelected = isSelected(file)
@@ -58,6 +59,7 @@ const Files = ({ files, onDelete }) => {
       : { ...selected, [name]: file };
     setSelected(newSelected);
   };
+
   const onSelect = () => {
     let newSelected = {};
     const length = Object.keys(selected).length;
@@ -130,6 +132,7 @@ const Files = ({ files, onDelete }) => {
     </>
   );
 };
+
 Files.propTypes = {
   files: PropTypes.arrayOf(
     PropTypes.shape({

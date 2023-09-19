@@ -8,7 +8,19 @@ import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import LoadingScreen from "../components/LoadingScreen";
 import { childrenProps } from "../lib/prop-types";
+
 export const AuthContext = createContext(null);
+
+const setCookies = (tokenKey, token) => {
+  const { accessToken, expiresIn } = token;
+  const seconds = parseInt(expiresIn, 10);
+  const expiresDays = seconds / 60 / 60 / 24;
+  Cookies.set(tokenKey, accessToken, {
+    expires: expiresDays,
+    secure: true,
+    sameSite: "strict",
+  });
+};
 
 export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
   const router = useRouter();
@@ -27,12 +39,16 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         };
+
         const response = await axios.get(`${apiUrl}/auth/me`, { headers });
         const { data } = await response;
+
         if (!data) return;
+
         setUser(data);
       } catch (e) {
         const { status } = _.get(e, "response", {});
+
         if (status === 401) {
           await router.push("/login");
         }
@@ -44,6 +60,7 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
       await router.push("/login");
     }
   };
+
   const login = async ({ username, password }) => {
     try {
       const response = await axios.post(
@@ -51,33 +68,29 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
         { username, password },
         {
           headers: {
+            "Access-Control-Allow-Origin": window.location.origin,
             "Content-Type": "application/json",
           },
         }
       );
+
       const { user, token } = response.data;
+
       if (!token) return;
-      const { accessToken, expiresIn } = token;
-      const seconds = parseInt(expiresIn, 10);
-      const expiresDays = seconds / 60 / 60 / 24;
-      Cookies.set(tokenKey, accessToken, {
-        expires: expiresDays,
-        secure: true,
-        sameSite: "strict",
-      });
+
+      setCookies(tokenKey, token);
       setUser(user);
+
       await router.push("/");
-    } catch (e) {
-      const { data, status } = _.get(e, "response", {});
-      if (status === 401 && data) {
-        if (data?.message) {
-          const { message } = data;
-          toast.error(message, {
-            position: "bottom-right",
-            hideProgressBar: false,
-            autoClose: 3000,
-          });
-        }
+    } catch (err) {
+      const { data, status } = _.get(err, "response", {});
+      if (status === 401 && data?.message) {
+        const { message } = data;
+        toast.error(message, {
+          position: "bottom-right",
+          hideProgressBar: false,
+          autoClose: 3000,
+        });
       }
     }
   };
@@ -116,21 +129,3 @@ AuthProvider.defaultProps = {
 };
 
 export const useAuth = () => useContext(AuthContext);
-
-export const Protected = ({ children, isProtected }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  const showLoading = isLoading || (!isAuthenticated && isProtected);
-
-  if (showLoading) {
-    return <LoadingScreen />;
-  }
-  return children;
-};
-Protected.propTypes = {
-  children: childrenProps.isRequired,
-  isProtected: PropTypes.bool,
-};
-Protected.defaultProps = {
-  isProtected: false,
-};

@@ -161,4 +161,5 @@ Home.getInitialProps = async () => {
   const isProtected = true;
   return { apiUrl, socketUrl, tokenKey, isProtected };
 };
+
 export default Home;
