@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -14,6 +15,19 @@ module.exports = {
       xxl: "1536px",
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-roboto)", ...defaultTheme.fontFamily.sans],
+        mono: ["var(--font-roboto-mono)", ...defaultTheme.fontFamily.mono],
+      },
+      colors: {
+        "telegram-white": "var(--telegram-bg-color)",
+        "telegram-black": "var(--telegram-text-color)",
+        "telegram-hint": "var(--telegram-hint-color)",
+        "telegram-link": "var(--telegram-link-color)",
+        "telegram-primary": "var(--telegram-button-color)",
+        "telegram-primary-text": "var(--telegram-button-text-color)",
+        "telegram-secondary-white": "var(--telegram-secondary-bg-color)",
+      },
       animation: {
         marquee: "marquee 25s linear infinite",
         marquee2: "marquee2 25s linear infinite",

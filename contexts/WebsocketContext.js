@@ -19,6 +19,7 @@ export const WebsocketProvider = ({ children, socketUrl, tokenKey }) => {
   const accessToken = Cookies.get(tokenKey);
   const [socket, setSocket] = useState(null);
   const connectSocket = useCallback(() => {
+    if (!socketUrl) return;
     const ioSocket = io(socketUrl, {
       reconnection: true,
       transports: ["websocket"],
