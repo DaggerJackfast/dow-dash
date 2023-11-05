@@ -68,10 +68,7 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
         `${apiUrl}/auth/login`,
         { username, password },
         {
-          headers: {
-            "Access-Control-Allow-Origin": `${window.location.origin} ${apiOrigin}`,
-            "Content-Type": "application/json",
-          },
+          "Content-Type": "application/x-www-form-urlencoded",
         }
       );
 
