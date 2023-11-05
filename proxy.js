@@ -11,7 +11,9 @@ app
   .prepare()
   .then(() => {
     const server = express();
-    const apiPath = process.env.API_URL || "/api";
+    const apiPath = process.env.API_URL
+      ? new URL(process.env.API_URL).pathname
+      : "/api";
     const proxyServer = process.env.PROXY_SERVER;
     const proxyPath = process.env.PROXY_PATH;
 

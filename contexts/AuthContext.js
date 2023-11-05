@@ -63,12 +63,13 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
 
   const login = async ({ username, password }) => {
     try {
+      const apiOrigin = new URL(apiUrl).origin;
       const response = await axios.post(
         `${apiUrl}/auth/login`,
         { username, password },
         {
           headers: {
-            "Access-Control-Allow-Origin": window.location.origin,
+            "Access-Control-Allow-Origin": `${window.location.origin} ${apiOrigin}`,
             "Content-Type": "application/json",
           },
         }
