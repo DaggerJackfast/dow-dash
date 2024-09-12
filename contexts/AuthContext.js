@@ -2,7 +2,7 @@ import React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import _ from "lodash";
+import { get } from "lodash";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
 
         setUser(data);
       } catch (e) {
-        const { status } = _.get(e, "response", {});
+        const { status } = get(e, "response", {});
 
         if (status === 401) {
           await router.push("/login");
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
 
       await router.push("/");
     } catch (err) {
-      const { data, status } = _.get(err, "response", {});
+      const { data, status } = get(err, "response", {});
       if (status === 401 && data?.message) {
         const { message } = data;
         toast.error(message, {

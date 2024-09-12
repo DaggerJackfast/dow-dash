@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import _ from "lodash";
+import { omit, has, keys, reduce } from "lodash";
 import PropTypes from "prop-types";
 import DeleteConfirmModal from "../DeleteConfirmModal";
 import File from "../File";
@@ -19,7 +19,7 @@ const Files = ({ files, onDelete }) => {
     if (!selectedLength) {
       return;
     }
-    const deleteFiles = _.keys(selected);
+    const deleteFiles = keys(selected);
     onDelete(deleteFiles);
     setSelected(false);
   };
@@ -49,13 +49,13 @@ const Files = ({ files, onDelete }) => {
 
   const isSelected = (file) => {
     const { name } = file;
-    return _.has(selected, name);
+    return has(selected, name);
   };
 
   const toggleSelected = (file) => {
     const { name } = file;
     const newSelected = isSelected(file)
-      ? _.omit(selected, name)
+      ? omit(selected, name)
       : { ...selected, [name]: file };
     setSelected(newSelected);
   };
@@ -67,7 +67,7 @@ const Files = ({ files, onDelete }) => {
       newSelected = {};
     }
     if (length < files.length) {
-      newSelected = _.reduce(
+      newSelected = reduce(
         files,
         (acc, file) => ({ ...acc, [file.name]: file }),
         {}

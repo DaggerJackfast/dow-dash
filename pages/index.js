@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import _ from "lodash";
+import { forEach, get, isObject } from "lodash";
 import getConfig from "next/config";
 import Head from "next/head";
 import Container from "../components/Container";
@@ -40,7 +40,7 @@ const Home = () => {
   const onTaskDelete = (task) => socket.emit(deleteTaskEvent, { id: task.id });
 
   const onFilesDelete = (files) => {
-    _.forEach(files, (file) => socket.emit(deleteFileEvent, { name: file }));
+    forEach(files, (file) => socket.emit(deleteFileEvent, { name: file }));
   };
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Home = () => {
       setFiles(filesPayload);
     });
     socket.on(downloadProgressEvent, (payload) => {
-      if (_.isObject(payload)) {
+      if (isObject(payload)) {
         const { data } = payload;
         setDownloadProgress({ [data.id]: data.progress });
       }
@@ -124,9 +124,9 @@ const Home = () => {
                         url={task.url}
                         datetime={task.datetime}
                         stage={task.stage}
-                        download={_.get(downloadProgress, task.id, 0)}
-                        upload={_.get(uploadProgress, task.id, 0)}
-                        message={_.get(uploadMessage, task.id, "")}
+                        download={get(downloadProgress, task.id, 0)}
+                        upload={get(uploadProgress, task.id, 0)}
+                        message={get(uploadMessage, task.id, "")}
                         onDelete={() => onTaskDelete(task)}
                       />
                     ))}

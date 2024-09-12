@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import cx from "classnames";
 import dayjs from "dayjs";
-import _ from "lodash";
+import { get } from "lodash";
 import PropTypes from "prop-types";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -43,7 +43,7 @@ const Task = ({
   };
 
   const stageName = Object.keys(stageClasses)[stage];
-  const stageClass = _.get(stageClasses, stageName);
+  const stageClass = get(stageClasses, stageName);
 
   const { ref, overflow } = useOverflowDetector();
   return (
