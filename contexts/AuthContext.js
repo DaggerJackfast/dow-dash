@@ -1,90 +1,101 @@
-import React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { get } from "lodash";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-import LoadingScreen from "../components/LoadingScreen";
+import useSWR from "swr";
 import { childrenProps } from "../lib/prop-types";
 
 export const AuthContext = createContext(null);
 
-const setCookies = (tokenKey, token) => {
-  const { accessToken, expiresIn } = token;
-  const seconds = parseInt(expiresIn, 10);
-  const expiresDays = seconds / 60 / 60 / 24;
-  Cookies.set(tokenKey, accessToken, {
-    expires: expiresDays,
-    secure: true,
-    sameSite: "strict",
-  });
+const postFetcher = async (url, data) => {
+  try {
+    const response = await axios.post(url, data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
-export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+const fetcher = async (url, token) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    const response = await axios.get(url, { headers });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
-  useEffect(() => {
-    loadUserFromCookies().then();
-  }, [apiUrl, tokenKey]);
+export const AuthProvider = ({
+  children,
+  apiUrl,
+  tokenKey,
+  isProtected = true,
+}) => {
+  const router = useRouter();
+  const [token, setToken] = useState(Cookies.get(tokenKey));
+  const {
+    data: user,
+    error,
+    mutate: userMutate,
+  } = useSWR(`${apiUrl}/auth/me`, (url) => fetcher(url, token), {
+    shouldRetryOnError: false,
+  });
+
+  console.log("TOKEN: ", token);
+
+  React.useEffect(() => {
+    if (token) {
+      userMutate();
+    }
+  }, [token]);
 
   const loadUserFromCookies = async () => {
-    const token = Cookies.get(tokenKey);
     if (token) {
       try {
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
-
-        const response = await axios.get(`${apiUrl}/auth/me`, { headers });
-        const { data } = await response;
-
-        if (!data) return;
-
-        setUser(data);
+        await userMutate();
       } catch (e) {
-        const { status } = get(e, "response", {});
-
+        const status = e.response?.status;
         if (status === 401) {
+          console.log("PUsh to login");
+          setToken(null);
           await router.push("/login");
         }
       }
-      return;
-    }
-    setIsLoading(false);
-    if (isProtected) {
+    } else {
+      console.log("AAAAAAAA push to login");
       await router.push("/login");
     }
   };
 
   const login = async ({ username, password }) => {
     try {
-      const apiOrigin = new URL(apiUrl).origin;
-      const response = await axios.post(
+      const response = await postFetcher(
         `${apiUrl}/auth/login`,
         { username, password },
-        {
-          "Content-Type": "application/x-www-form-urlencoded",
-        }
+        { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
       );
 
-      const { user, token } = response.data;
+      const { user, token } = response;
 
       if (!token) return;
 
-      setCookies(tokenKey, token);
-      setUser(user);
-
+      Cookies.set(tokenKey, token, {
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      });
+      setToken(token);
       await router.push("/");
     } catch (err) {
-      const { data, status } = get(err, "response", {});
+      const { data, status } = err.response || {};
       if (status === 401 && data?.message) {
-        const { message } = data;
-        toast.error(message, {
+        toast.error(data.message, {
           position: "bottom-right",
           hideProgressBar: false,
           autoClose: 3000,
@@ -95,9 +106,16 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
 
   const logout = async () => {
     Cookies.remove(tokenKey);
-    setUser(null);
+    setToken(null);
     await router.push("/login");
   };
+
+  React.useEffect(() => {
+    loadUserFromCookies();
+  }, [apiUrl, tokenKey, token]);
+
+  console.log("error: ", error);
+  console.log("user: ", user);
 
   return (
     <AuthContext.Provider
@@ -106,7 +124,7 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
         user,
         login,
         logout,
-        isLoading,
+        isLoading: !user && !error,
       }}
     >
       {children}
@@ -115,15 +133,10 @@ export const AuthProvider = ({ children, apiUrl, tokenKey, isProtected }) => {
 };
 
 AuthProvider.propTypes = {
-  apiUrl: PropTypes.string,
+  apiUrl: PropTypes.string.isRequired,
   children: childrenProps.isRequired,
-  tokenKey: PropTypes.string,
+  tokenKey: PropTypes.string.isRequired,
   isProtected: PropTypes.bool,
-};
-AuthProvider.defaultProps = {
-  apiUrl: "",
-  tokenKey: "",
-  isProtected: false,
 };
 
 export const useAuth = () => useContext(AuthContext);

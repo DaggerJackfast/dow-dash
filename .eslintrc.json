@@ -49,9 +49,6 @@
     "react/prop-types": [
       "error"
     ],
-    "react/require-default-props": [
-      "error"
-    ],
     "jsx-a11y/no-access-key": "off",
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off",

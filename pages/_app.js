@@ -41,8 +41,4 @@ MyApp.propTypes = {
     isProtected: PropTypes.bool,
   }),
 };
-MyApp.defaultProps = {
-  pageProps: {},
-};
-
 export default MyApp;

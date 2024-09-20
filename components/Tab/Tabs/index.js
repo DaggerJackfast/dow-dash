@@ -18,6 +18,3 @@ Tabs.propTypes = {
   children: childrenProps.isRequired,
   className: PropTypes.string,
 };
-Tabs.defaultProps = {
-  className: "",
-};

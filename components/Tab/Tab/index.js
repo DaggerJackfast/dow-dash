@@ -31,9 +31,3 @@ Tab.propTypes = {
   className: PropTypes.string,
   active: PropTypes.bool,
 };
-Tab.defaultProps = {
-  onClick: () => {},
-  className: "",
-  id: null,
-  active: false,
-};

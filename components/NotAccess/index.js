@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { CircularProgressbar } from "react-circular-progressbar";
 import Countdown from "react-countdown";
 
-const NotAccess = ({ delay }) => {
+const NotAccess = ({ delay = 5 }) => {
   const router = useRouter();
   const countDate = useMemo(() => Date.now() + delay * 1000, [delay]);
   const onComplete = async () => {
@@ -46,9 +46,6 @@ const NotAccess = ({ delay }) => {
 };
 NotAccess.propTypes = {
   delay: PropTypes.number,
-};
-NotAccess.defaultProps = {
-  delay: 5,
 };
 
 export default NotAccess;

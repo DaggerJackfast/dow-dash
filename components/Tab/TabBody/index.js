@@ -14,6 +14,3 @@ TabBody.propTypes = {
   children: childrenProps.isRequired,
   className: PropTypes.string,
 };
-TabBody.defaultProps = {
-  className: "",
-};

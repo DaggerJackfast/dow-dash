@@ -4,7 +4,12 @@ import CloseIcon from "../../public/icons/close-icon.svg";
 import WarningIcon from "../../public/icons/warning-icon.svg";
 import Modal from "../Modal";
 
-const DeleteConfirmModal = ({ onConfirm, onClose, show, title }) => {
+const DeleteConfirmModal = ({
+  onConfirm = () => {},
+  onClose = () => {},
+  show,
+  title,
+}) => {
   return (
     <Modal show={show} onOverlayClick={onClose}>
       <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-50 overflow-x-hidden overflow-y-auto">
@@ -50,11 +55,6 @@ DeleteConfirmModal.propTypes = {
   onConfirm: PropTypes.func,
   onClose: PropTypes.func,
   show: PropTypes.bool,
-};
-DeleteConfirmModal.defaultProps = {
-  onConfirm: () => {},
-  onClose: () => {},
-  show: false,
 };
 
 export default DeleteConfirmModal;

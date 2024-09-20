@@ -64,14 +64,5 @@ File.propTypes = {
   onClick: PropTypes.func,
   isDirectory: PropTypes.bool,
 };
-File.defaultProps = {
-  name: "",
-  path: "",
-  mimeType: "",
-  size: 0,
-  isDirectory: false,
-  selected: false,
-  onClick: () => {},
-};
 
 export default File;

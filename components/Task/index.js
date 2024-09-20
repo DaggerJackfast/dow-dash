@@ -132,15 +132,5 @@ Task.propTypes = {
   message: PropTypes.string,
 };
 
-Task.defaultProps = {
-  name: "",
-  datetime: "",
-  url: "",
-  stage: 0,
-  download: 0,
-  upload: 0,
-  message: "",
-  onDelete: () => {},
-};
 
 export default Task;

@@ -145,9 +145,5 @@ Files.propTypes = {
   ),
   onDelete: PropTypes.func,
 };
-Files.defaultProps = {
-  files: [],
-  onDelete: () => {},
-};
 
 export default Files;

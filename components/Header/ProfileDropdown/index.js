@@ -58,8 +58,4 @@ ProfileDropdown.propTypes = {
   user: PropTypes.shape({ username: PropTypes.string }),
   logout: PropTypes.func.isRequired,
 };
-ProfileDropdown.defaultProps = {
-  user: null,
-};
-
 export default ProfileDropdown;

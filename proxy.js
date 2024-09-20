@@ -16,6 +16,8 @@ app
       : "/api";
     const proxyServer = process.env.PROXY_SERVER;
     const proxyPath = process.env.PROXY_PATH;
+    console.log("proxyServer", proxyServer);
+    console.log("proxyPath", proxyPath);
 
     const options = {
       target: proxyServer,
@@ -23,6 +25,18 @@ app
       logLevel: "debug",
       pathRewrite: {
         [`^${apiPath}`]: proxyPath,
+      },
+      onProxyReq: (proxyReq, req, res) => {
+        // Добавление заголовков, если необходимо
+        proxyReq.setHeader("Authorization", req.headers["authorization"] || "");
+      },
+      onProxyRes: (proxyRes, req, res) => {
+        // Добавление заголовков, если необходимо
+        proxyRes.headers["Access-Control-Allow-Origin"] = "*";
+        proxyRes.headers["Access-Control-Allow-Headers"] =
+          "Content-Type, Authorization";
+        proxyRes.headers["Access-Control-Allow-Methods"] =
+          "GET, POST, PUT, DELETE, OPTIONS";
       },
     };
     if (dev) {

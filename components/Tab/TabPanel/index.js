@@ -19,7 +19,3 @@ TabPanel.propTypes = {
   className: PropTypes.string,
   children: childrenProps.isRequired,
 };
-TabPanel.defaultProps = {
-  show: false,
-  className: "",
-};

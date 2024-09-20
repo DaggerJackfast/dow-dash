@@ -19,7 +19,3 @@ TabList.propTypes = {
   children: childrenProps,
   className: PropTypes.string,
 };
-TabList.defaultProps = {
-  className: "",
-  children: null,
-};

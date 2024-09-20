@@ -37,10 +37,5 @@ Modal.propTypes = {
   show: PropTypes.bool,
   onOverlayClick: PropTypes.func,
 };
-Modal.defaultProps = {
-  className: "",
-  show: false,
-  onOverlayClick: () => {},
-};
 
 export default Modal;
